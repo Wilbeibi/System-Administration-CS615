@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>CS615 HW1</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="CS615 HW1"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2014-01-25T00:50-0500"/>
+<meta name="author" content="Hongyi Shen"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="worg.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">CS615 HW1</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Setup Environment for EC2 and create an instance</a>
+<ul>
+<li><a href="#sec-1-1">Configuration AWS CLI tools</a></li>
+<li><a href="#sec-1-2">Create a EC2 instance (OmniOS)</a></li>
+<li><a href="#sec-1-3">Show Instance info</a></li>
+<li><a href="#sec-1-4">Commands to run</a></li>
+<li><a href="#sec-1-5">Create another instance (Linux)</a></li>
+<li><a href="#sec-1-6">Show Instance info</a></li>
+<li><a href="#sec-1-7">Commands to run</a></li>
+<li><a href="#sec-1-8">Reference</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1">Setup Environment for EC2 and create an instance</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1">Configuration AWS CLI tools</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<ul>
+<li>Due to ec2 tools are already installed under <code>/opt/ec2tools-1.4</code>,
+     all we need to do is edit bashrc file.
+</li>
+<li>Check lab's java version.
+     Use <code>java -version</code> to get java version, make sure it &gt;=1.6. If
+     it is not, there is nothing we can do about it.
+</li>
+<li>Tell CLI tools where they live
+     open ~/.bashrc, add EC2 configuration below to tell the tools who you
+     are. The private key and X.509 certification can be retrived
+     from Security Credentials page. (The newer version use access key
+     and secret key to verify)
+
+
+
+<pre class="example">export EC2_HOME=/opt/ec2tools-1.4
+export PATH=$PATH:$EC2_HOME/bin
+export EC2_PRIVATE_KEY=~/.ec2/pk-XXXXXXXXXXX.cer
+export EC2_CERT=~/.ec2/cert-XXXXXXXXXXXXXXXX.cer
+export JAVA_HOME=/usr
+</pre>
+
+</li>
+<li>To protect the private key from been peeked by others, <code>chmod 600      .bashrc</code>. After that, <code>source .bashrc</code> to re execute the script.
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2">Create a EC2 instance (OmniOS)</h3>
+<div class="outline-text-3" id="text-1-2">
+
+<dl>
+<dt>Specifiy the image</dt><dd>
+<p>
+     To specify the OmniOS we want, one way to find needed ami-id is:
+</p>
+
+
+<pre class="example">ec2-describe-images -x all | grep OmniOS
+</pre>
+
+<p>
+     For Linux
+     According to the version infomation, we know the wanted ami-id
+     for OmniOS is <b>ami-505ce739</b>
+</p></dd>
+<dt>Create a keypair for further ssh usage</dt><dd>
+
+
+
+<pre class="example">ec2-create-keypair omni-keypair
+</pre>
+
+
+<p>
+     Then copy the output private key to create omni-keypair.pem.
+     Set the permission of this file. Only the creater can view it.
+</p>
+
+
+<pre class="example">chmod 400 omni-keypair.pem
+</pre>
+
+
+</dd>
+<dt>Create a Security group</dt><dd>
+<p>
+     Create the security group to allow only several ports can access
+     it
+</p>
+
+
+<pre class="example">ec2-create-group omni-ports -d "Security Group for OmniOS"
+ec2-authorize omni-ports -P tcp -p 22
+</pre>
+
+
+</dd>
+<dt>Run the instance</dt><dd>
+<p>
+     Lanuch the instance, use the infomation we got before(ami-id,
+     keypair and security group)
+</p>
+
+
+<pre class="example">ec2-run-instances ami-505ce739 -k omni-keypair -g omni-ports -t t1.micro
+</pre>
+
+
+</dd>
+<dt>Connect to the instance via SSH</dt><dd>
+<p>
+     Now login to the running instance with given keypair:
+</p>
+
+
+<pre class="example">ssh -i omni-keypair.pem root@&lt;Public DNS&gt;
+</pre>
+
+
+</dd>
+<dt>Check and terminate</dt><dd>
+<p>
+     To check the status of instance
+</p>
+
+
+<pre class="example">ec2-describe-instance &lt;instance id&gt;
+</pre>
+
+<p>
+     To terminate instance:
+</p>
+
+
+<pre class="example">ec2-terminate-instace &lt;instance id&gt;
+</pre>
+
+</dd>
+</dl>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3">Show Instance info</h3>
+<div class="outline-text-3" id="text-1-3">
+
+<dl>
+<dt>display basic system information </dt><dd>
+<p>
+     <code>uname -a</code>
+</p>
+
+
+<pre class="example">SunOS domU-12-31-39-0F-1C-BB.compute-1.internal 5.11 omnios-33fdde4 i86pc i386 i86xpv Solaris
+</pre>
+
+</dd>
+<dt>display the partition table</dt><dd>
+<p>
+     Unfortunately, I didn't find fstab in Solaris. So, use this command:
+     <code>format</code>
+     <code>format&gt; verify</code>
+     The output are below:
+</p>
+
+
+<pre class="example">Primary label contents:
+Volume name = &lt;        &gt;
+ascii name  = &lt;DEFAULT cyl 4085 alt 2 hd 128 sec 32&gt;
+pcyl        = 4087
+ncyl        = 4085
+acyl        =    2
+bcyl        =    0
+nhead       =  128
+nsect       =   32
+Part      Tag    Flag     Cylinders        Size            Blocks
+ 0       root    wm       1 - 4084        7.98GB    (4084/0/0) 16728064
+ 1 unassigned    wu       0               0         (0/0/0)           0
+ 2     backup    wu       0 - 4084        7.98GB    (4085/0/0) 16732160
+ 3 unassigned    wu       0               0         (0/0/0)           0
+ 4 unassigned    wu       0               0         (0/0/0)           0
+ 5 unassigned    wu       0               0         (0/0/0)           0
+ 6 unassigned    wu       0               0         (0/0/0)           0
+ 7 unassigned    wu       0               0         (0/0/0)           0
+ 8       boot    wu       0 -    0        2.00MB    (1/0/0)        4096
+ 9 unassigned    wu       0               0         (0/0/0)           0
+</pre>
+
+</dd>
+<dt>display the currently mounted filesystems</dt><dd>
+<p>
+     <code>mount</code>
+</p>
+
+
+<pre class="example">/ on syspool/ROOT/omnios-r151004 read/write/setuid/devices/dev=1850002 on Wed Dec 31 19:00:00 1969
+/devices on /devices read/write/setuid/devices/dev=8240000 on Fri Jan 24 00:14:59 2014
+/dev on /dev read/write/setuid/devices/dev=8280000 on Fri Jan 24 00:14:59 2014
+/system/contract on ctfs read/write/setuid/devices/dev=8340001 on Fri Jan 24 00:15:02 2014
+/proc on proc read/write/setuid/devices/dev=82c0000 on Fri Jan 24 00:15:02 2014
+/etc/mnttab on mnttab read/write/setuid/devices/dev=8380001 on Fri Jan 24 00:15:02 2014
+/etc/svc/volatile on swap read/write/setuid/devices/xattr/dev=83c0001 on Fri Jan 24 00:15:02 2014
+/system/object on objfs read/write/setuid/devices/dev=8400001 on Fri Jan 24 00:15:02 2014
+/etc/dfs/sharetab on sharefs read/write/setuid/devices/dev=8440001 on Fri Jan 24 00:15:02 2014
+/lib/libc.so.1 on /usr/lib/libc/libc_hwcap3.so.1 read/write/setuid/devices/dev=1850002 on Fri Jan 24 00:15:44 2014
+/dev/fd on fd read/write/setuid/devices/dev=8540001 on Fri Jan 24 00:15:48 2014
+/tmp on swap read/write/setuid/devices/xattr/dev=83c0002 on Fri Jan 24 00:15:49 2014
+/var/run on swap read/write/setuid/devices/xattr/dev=83c0003 on Fri Jan 24 00:15:49 2014
+/syspool on syspool read/write/setuid/devices/nonbmand/exec/xattr/atime/dev=1850007 on Fri Jan 24 00:15:58 2014
+</pre>
+
+</dd>
+<dt>display available disk space</dt><dd>
+<p>
+     use <code>df</code> command, with human readable format
+     <code>df -h</code>
+</p>
+
+
+<pre class="example">Filesystem                      Size  Used Avail Use% Mounted on
+syspool/ROOT/omnios-r151004     7.9G  777M  7.1G  10% /
+swap                            215M  288K  215M   1% /etc/svc/volatile
+/usr/lib/libc/libc_hwcap3.so.1  7.9G  777M  7.1G  10% /lib/libc.so.1
+swap                            215M     0  215M   0% /tmp
+swap                            215M   36K  215M   1% /var/run
+syspool                         7.1G   37K  7.1G   1% /syspool
+</pre>
+
+</dd>
+</dl>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-3">
+<h3 id="sec-1-4">Commands to run</h3>
+<div class="outline-text-3" id="text-1-4">
+
+<dl>
+<dt><code>uname -a</code></dt><dd>
+
+
+
+<pre class="example">SunOS domU-12-31-39-0F-1C-BB.compute-1.internal 5.11 omnios-33fdde4 i86pc i386 i86xpv Solaris
+</pre>
+
+</dd>
+<dt><code>whoami</code></dt><dd>
+
+
+
+<pre class="example">root
+</pre>
+
+</dd>
+<dt><code>date</code></dt><dd>
+
+
+
+<pre class="example">January 24, 2014 12:58:47 AM EST
+</pre>
+
+</dd>
+<dt><code>w</code></dt><dd>
+
+
+
+<pre class="example">12:59am  up 44 min(s),  1 user,  load average: 0.00, 0.00, 0.00
+User     tty           login@  idle   JCPU   PCPU  what
+root     pts/1        12:30am                      w
+</pre>
+
+</dd>
+<dt><code>ifconfig -a</code></dt><dd>
+
+
+
+<pre class="example">lo0: flags=2001000849&lt;UP,LOOPBACK,RUNNING,MULTICAST,IPv4,VIRTUAL&gt; mtu 8232 index 1
+inet 127.0.0.1 netmask ff000000 
+xnf0: flags=1004843&lt;UP,BROADCAST,RUNNING,MULTICAST,DHCP,IPv4&gt; mtu 1500 index 2
+inet 172.31.43.110 netmask fffff000 broadcast 172.31.47.255
+ether 12:a7:95:b4:79:71 
+lo0: flags=2002000849&lt;UP,LOOPBACK,RUNNING,MULTICAST,IPv6,VIRTUAL&gt; mtu 8252 index 1
+inet6 ::1/128 
+xnf0: flags=20002000840&lt;RUNNING,MULTICAST,IPv6&gt; mtu 1500 index 2
+inet6 ::/0 
+ether 12:a7:95:b4:79:71 
+</pre>
+
+</dd>
+<dt><code>netstat -na</code></dt><dd>
+
+
+
+<pre class="example">UDP: IPv4
+Local Address        Remote Address      State
+-------------------- -------------------- ----------
+*.68                                Idle
+*.546                               Idle
+172.31.43.110.68                          Idle
+*.111                               Idle
+*.*                                 Unbound
+*.34664                             Idle
+*.111                               Idle
+*.*                                 Unbound
+*.62730                             Idle
+*.*                                 Unbound
+
+UDP: IPv6
+Local Address                     Remote Address                   State      If
+--------------------------------- --------------------------------- ---------- -----
+*.546                                                         Idle       
+*.111                                                         Idle       
+*.*                                                           Unbound    
+*.34664                                                       Idle       
+*.*                                                           Unbound    
+
+TCP: IPv4
+Local Address        Remote Address    Swind Send-Q Rwind Recv-Q    State
+-------------------- -------------------- ----- ------ ----- ------ -----------
+127.0.0.1.4999             *.*                0      0 128000      0 LISTEN
+*.111                *.*                0      0 128000      0 LISTEN
+*.*                  *.*                0      0 128000      0 IDLE
+*.111                *.*                0      0 128000      0 LISTEN
+*.*                  *.*                0      0 128000      0 IDLE
+*.50196              *.*                0      0 128000      0 LISTEN
+*.44266              *.*                0      0 128000      0 LISTEN
+*.22                 *.*                0      0 128000      0 LISTEN
+172.31.43.110.22     72.76.187.129.56666  131040      0 128872      0 ESTABLISHED
+
+TCP: IPv6
+Local Address                     Remote Address                 Swind Send-Q Rwind Recv-Q   State      If
+--------------------------------- --------------------------------- ----- ------ ----- ------ ----------- -----
+*.111                             *.*                             0      0 128000      0 LISTEN      
+*.*                               *.*                             0      0 128000      0 IDLE        
+*.44266                           *.*                             0      0 128000      0 LISTEN      
+*.22                              *.*                             0      0 128000      0 LISTEN      
+
+Active UNIX domain sockets
+Address  Type          Vnode     Conn  Local Addr      Remote Addr
+ffffff0098279b38 stream-ord ffffff0098096900 0000000 /tmp/ssh-XX4maWeb/agent.550                
+ffffff0096613020 dgram      ffffff009709e980 0000000 /var/run/in.ndpd_mib                
+ffffff00966133d0 stream-ord ffffff009709eb80 0000000 /var/run/in.ndpd_ipadm                
+ffffff0096613780 stream-ord ffffff009707ca80 0000000 /var/run/.inetd.uds                
+ffffff0096613b30 stream-ord 0000000 0000000 /var/run/hald/dbus-AkvYKxbIUb                
+ffffff009651d018 stream-ord 0000000 0000000 /var/run/dbus/system_bus_socket                
+ffffff009651d3c8 stream-ord 0000000 ffffff0096257d00                /var/run/dbus/system_bus_socket 
+ffffff009651d778 stream-ord 0000000 ffffff0096413700                /var/run/hald/dbus-AkvYKxbIUb 
+ffffff009651db28 stream-ord 0000000 0000000 /var/run/hald/dbus-AkvYKxbIUb                
+ffffff009640c010 stream-ord 0000000 ffffff0096413700                /var/run/hald/dbus-AkvYKxbIUb 
+ffffff009640c3c0 stream-ord 0000000 0000000 /var/run/hald/dbus-chK7PX7wXr                
+ffffff009640c770 stream-ord 0000000 ffffff009637b000                /var/run/hald/dbus-chK7PX7wXr 
+ffffff009640cb20 stream-ord ffffff009637b000 0000000 /var/run/hald/dbus-chK7PX7wXr                
+ffffff0095461008 stream-ord 0000000 0000000                               
+ffffff00954613b8 stream-ord 0000000 0000000                               
+ffffff0095461768 stream-ord ffffff0096413700 0000000 /var/run/hald/dbus-AkvYKxbIUb                
+ffffff0095461b18 stream-ord ffffff0096257d00 0000000 /var/run/dbus/system_bus_socket 
+</pre>
+
+</dd>
+</dl>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-3">
+<h3 id="sec-1-5">Create another instance (Linux)</h3>
+<div class="outline-text-3" id="text-1-5">
+
+<p>   The process of create a linux instance almost the same. The only
+   difference is choose a Linux ami-id, in this case, I
+   choose <b>ami-ab36fbc2</b>, ubuntu-lucid-10.04, 32 bit. Again, login
+   with <code>SSH</code>, if is for long term usage, we can add host to <code>~/.ssh/config</code>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-3">
+<h3 id="sec-1-6">Show Instance info</h3>
+<div class="outline-text-3" id="text-1-6">
+
+<dl>
+<dt>display basic system information</dt><dd>
+<p>
+     <code>uname -a</code>
+</p>
+
+
+<pre class="example">Linux ip-172-31-39-169 2.6.32-318-ec2 #38-Ubuntu SMP Thu Sep 1 17:54:33 UTC 2011 i686 GNU/Linux
+</pre>
+
+</dd>
+<dt>display the partition table</dt><dd>
+<p>
+     <code>less /etc/fstab</code>
+</p>
+
+
+<pre class="example"># /etc/fstab: static file system information.
+# &lt;file system&gt;                                 &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+proc                                            /proc           proc    nodev,noexec,nosuid 0       0
+LABEL=cloudimg-rootfs                                       /               ext3    defaults        0       0
+/dev/sda2  /mnt    auto    defaults,nobootwait,comment=cloudconfig 0   0
+</pre>
+
+</dd>
+<dt>display the currently mounted filesystems</dt><dd>
+<p>
+     <code>mount | column -t</code>
+</p>
+
+
+<pre class="example">/dev/sda1  on  /                     type  ext3        (rw)
+proc       on  /proc                 type  proc        (rw,noexec,nosuid,nodev)
+none       on  /sys                  type  sysfs       (rw,noexec,nosuid,nodev)
+none       on  /sys/kernel/debug     type  debugfs     (rw)
+none       on  /sys/kernel/security  type  securityfs  (rw)
+none       on  /dev                  type  devtmpfs    (rw,mode=0755)
+none       on  /dev/pts              type  devpts      (rw,noexec,nosuid,gid=5,mode=0620)
+none       on  /dev/shm              type  tmpfs       (rw,nosuid,nodev)
+none       on  /var/run              type  tmpfs       (rw,nosuid,mode=0755)
+none       on  /var/lock             type  tmpfs       (rw,noexec,nosuid,nodev)
+none       on  /lib/init/rw          type  tmpfs       (rw,nosuid,mode=0755)
+</pre>
+
+</dd>
+<dt>display available disk space</dt><dd>
+<p>
+      <code>df -h</code>
+</p>
+
+
+<pre class="example">Filesystem                      Size  Used Avail Use% Mounted on
+syspool/ROOT/omnios-r151004     7.9G  777M  7.1G  10% /
+swap                            215M  288K  215M   1% /etc/svc/volatile
+/usr/lib/libc/libc_hwcap3.so.1  7.9G  777M  7.1G  10% /lib/libc.so.1
+swap                            215M     0  215M   0% /tmp
+swap                            215M   36K  215M   1% /var/run
+syspool                         7.1G   37K  7.1G   1% /syspool
+</pre>
+
+</dd>
+</dl>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-3">
+<h3 id="sec-1-7">Commands to run</h3>
+<div class="outline-text-3" id="text-1-7">
+
+<dl>
+<dt><code>uname -a</code></dt><dd>
+
+
+
+<pre class="example">Linux ip-172-31-39-169 2.6.32-318-ec2 #38-Ubuntu SMP Thu Sep 1 17:54:33 UTC 2011 i686 GNU/Linux
+</pre>
+
+</dd>
+<dt><code>whoami</code></dt><dd>
+
+
+
+<pre class="example">ubuntu
+</pre>
+
+</dd>
+<dt><code>date</code></dt><dd>
+
+
+
+<pre class="example">Fri Jan 24 17:53:31 UTC 2014
+</pre>
+
+</dd>
+<dt><code>w</code></dt><dd>
+
+
+
+<pre class="example">17:54:05 up 14 min,  1 user,  load average: 0.00, 0.00, 0.00
+USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT
+ubuntu   pts/0    pool-72-76-187-1 17:51    0.00s  0.19s  0.00s w
+</pre>
+
+</dd>
+<dt><code>ifconfig -a</code></dt><dd>
+
+
+
+<pre class="example">dummy0    Link encap:Ethernet  HWaddr da:ba:91:38:43:0c  
+          BROADCAST NOARP  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eql       Link encap:Serial Line IP  
+          MASTER  MTU:576  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:5 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 12:61:b9:e0:8c:6b  
+          inet addr:172.31.39.169  Bcast:172.31.47.255  Mask:255.255.240.0
+          inet6 addr: fe80::1061:b9ff:fee0:8c6b/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:704 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:477 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:77419 (77.4 KB)  TX bytes:54672 (54.6 KB)
+
+ifb0      Link encap:Ethernet  HWaddr 12:e4:cc:79:09:7b  
+          BROADCAST NOARP  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:32 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+ifb1      Link encap:Ethernet  HWaddr a2:40:2b:de:98:06  
+          BROADCAST NOARP  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:32 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+</pre>
+
+</dd>
+<dt><code>netstat -na</code></dt><dd>
+
+
+
+<pre class="example">Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
+tcp        0     32 172.31.39.169:22        72.76.187.129:60188     ESTABLISHED
+tcp6       0      0 :::22                   :::*                    LISTEN     
+udp        0      0 0.0.0.0:68              0.0.0.0:*                          
+Active UNIX domain sockets (servers and established)
+Proto RefCnt Flags       Type       State         I-Node   Path
+unix  2      [ ACC ]     STREAM     LISTENING     6700     /tmp/ssh-KyDVxrS882/agent.882
+unix  4      [ ]         DGRAM                    5651     /dev/log
+unix  2      [ ACC ]     STREAM     LISTENING     3541     @/com/ubuntu/upstart
+unix  2      [ ]         DGRAM                    3640     @/org/kernel/udev/udevd
+unix  2      [ ACC ]     STREAM     LISTENING     5599     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     6697     
+unix  3      [ ]         STREAM     CONNECTED     6696     
+unix  3      [ ]         STREAM     CONNECTED     6558     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     6557     
+unix  2      [ ]         DGRAM                    6556     
+unix  3      [ ]         STREAM     CONNECTED     6009     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     6008     
+unix  3      [ ]         STREAM     CONNECTED     5983     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     5982     
+unix  2      [ ]         DGRAM                    5724     
+unix  3      [ ]         STREAM     CONNECTED     5629     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     5628     
+unix  3      [ ]         STREAM     CONNECTED     5612     
+unix  3      [ ]         STREAM     CONNECTED     5611     
+unix  3      [ ]         DGRAM                    3669     
+unix  3      [ ]         DGRAM                    3668     
+unix  3      [ ]         STREAM     CONNECTED     3623     @/com/ubuntu/upstart
+unix  3      [ ]         STREAM     CONNECTED     3622 
+</pre>
+
+</dd>
+</dl>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-3">
+<h3 id="sec-1-8">Reference</h3>
+<div class="outline-text-3" id="text-1-8">
+
+<ul>
+<li><a href="http://paulstamatiou.com/how-to-getting-started-with-amazon-ec2/">How To: Getting Started with Amazon EC2</a>
+</li>
+<li><a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SettingUp_CommandLine.html#tools-introduction">Setting Up the Amazon EC2 Command Line Interface Tools on Linux/UNIX and Mac OS X</a>
+</li>
+<li><a href="http://docs.aws.amazon.com/AWSEC2/latest/CommandLineReference/command-reference.html">CLI Tools Reference</a>
+</li>
+<li><a href="http://docs.aws.amazon.com/AWSEC2/latest/CommandLineReference/ec2-cli-launch-instance.html">EC2 CLI Lanuch Instance</a>
+</li>
+<li><a href="http://www.cs.stevens.edu/~hshen4/CS615/HW1/HW1-hshen4.html">http://www.cs.stevens.edu/~hshen4/CS615/HW1/HW1-hshen4.html</a>
+</li>
+</ul>
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2014-01-25T00:50-0500</p>
+<p class="author">Author: Hongyi Shen</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>
